@@ -1,6 +1,7 @@
 import anthropic
+import os
 
-client = anthropic.Anthropic()
+client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
 def summarize_theme(theme_name, articles):
     # Bundel de titels en samenvattingen van alle artikels
