@@ -3,3 +3,4 @@ beautifulsoup4
 fpdf2
 feedparser
 anthropic
+resend

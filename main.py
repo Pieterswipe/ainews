@@ -3,6 +3,9 @@ from classifier import classify_all
 from summarizer import summarize_all_themes
 from pdf_maker import create_pdf, create_summary_pdf
 from datetime import datetime
+import resend
+import os
+import base64
 
 print("=" * 50)
 print("   Weekly AI News Digest Generator")
@@ -42,3 +45,20 @@ print(f"  Klaar! Twee PDF's aangemaakt:")
 print(f"  - {filename_full} (volledig overzicht)")
 print(f"  - {filename_summary} (alleen samenvattingen)")
 print("=" * 50)
+
+# Step 5: Mail versturen via Resend
+print("\nStep 5: Mail versturen...")
+resend.api_key = os.environ.get("RESEND_API_KEY")
+
+with open(filename_summary, "rb") as f:
+    pdf_data = base64.b64encode(f.read()).decode("utf-8")
+
+resend.Emails.send({
+    "from": "noreply@dthtools.be",
+    "to": "pieter@swipedrinks.com",
+    "subject": f"AI Nieuws Digest – {date_str}",
+    "html": f"<p>Dag Pieter,</p><p>Hierbij de AI nieuwssamenvatting van {date_str}.</p>",
+    "attachments": [{"filename": filename_summary, "content": pdf_data}]
+})
+
+print("  Mail verstuurd!")
