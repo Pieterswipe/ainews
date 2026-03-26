@@ -3,6 +3,7 @@ import os
 
 api_key = os.environ.get("ANTHROPIC_API_KEY")
 print(f"DEBUG: API key aanwezig: {bool(api_key)}, lengte: {len(api_key) if api_key else 0}")
+print(f"DEBUG: Alle env variabelen: {[k for k in os.environ.keys()]}")
 client = anthropic.Anthropic(api_key=api_key)
 
 def summarize_theme(theme_name, articles):
