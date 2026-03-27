@@ -2,6 +2,7 @@ from scraper import get_articles_last_week
 from classifier import classify_all
 from summarizer import summarize_all_themes
 from pdf_maker import create_pdf, create_summary_pdf
+from podcast_maker import genereer_podcast
 from datetime import datetime
 import resend
 import os
@@ -46,19 +47,30 @@ print(f"  - {filename_full} (volledig overzicht)")
 print(f"  - {filename_summary} (alleen samenvattingen)")
 print("=" * 50)
 
-# Step 5: Mail versturen via Resend
-print("\nStep 5: Mail versturen...")
+# Step 5: Podcast genereren
+filename_podcast = f"ai_news_samenvatting_{date_str}.mp3"
+print(f"\nStep 5: Audio samenvatting genereren...")
+genereer_podcast(summaries, filename_podcast)
+
+# Step 6: Mail versturen via Resend
+print("\nStep 6: Mail versturen...")
 resend.api_key = os.environ.get("RESEND_API_KEY")
 
 with open(filename_summary, "rb") as f:
     pdf_data = base64.b64encode(f.read()).decode("utf-8")
 
+with open(filename_podcast, "rb") as f:
+    podcast_data = base64.b64encode(f.read()).decode("utf-8")
+
 resend.Emails.send({
     "from": "noreply@dthtools.be",
     "to": "pieter@swipedrinks.com",
     "subject": f"AI Nieuws Digest – {date_str}",
-    "html": f"<p>Dag Pieter,</p><p>Hierbij de AI nieuwssamenvatting van {date_str}.</p>",
-    "attachments": [{"filename": filename_summary, "content": pdf_data}]
+    "html": f"<p>Dag Pieter,</p><p>Hierbij de AI nieuwssamenvatting van {date_str}.</p><p>Bijlagen: PDF samenvatting + audio voorlezing.</p>",
+    "attachments": [
+        {"filename": filename_summary, "content": pdf_data},
+        {"filename": filename_podcast, "content": podcast_data},
+    ]
 })
 
 print("  Mail verstuurd!")

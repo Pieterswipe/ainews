@@ -4,3 +4,4 @@ fpdf2
 feedparser
 anthropic
 resend
+openai
