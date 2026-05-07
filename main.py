@@ -64,9 +64,22 @@ with open(filename_podcast, "rb") as f:
 
 resend.Emails.send({
     "from": "noreply@dthtools.be",
-    "to": "pieter@swipedrinks.com",
+    "to": ["pieter@swipedrinks.com", "jeroenborloo@gmail.com", "simondewinter89@gmail.com"],
     "subject": f"AI Nieuws Digest – {date_str}",
-    "html": f"<p>Dag Pieter,</p><p>Hierbij de AI nieuwssamenvatting van {date_str}.</p><p>Bijlagen: PDF samenvatting + audio voorlezing.</p>",
+    "html": f"""<p>Dag Pieter, Jeroen en Simon</p>
+<p>Hier is jullie AI-update van deze week.</p>
+<p>We hebben het meest relevante AI-nieuws voor jullie samengevat in eenvoudig Nederlands. Je krijgt snel zicht op wat er verandert, welke tools opvallen en welke evoluties de moeite zijn om in de gaten te houden.</p>
+<p><strong>In deze update:</strong></p>
+<ul>
+  <li>de belangrijkste AI-nieuwtjes van de week</li>
+  <li>opvallende nieuwe tools of functies</li>
+  <li>concrete toepassingen voor werk, school, business of dagelijks gebruik</li>
+  <li>trends die mogelijk belangrijk worden</li>
+  <li>een korte podcastversie in bijlage</li>
+</ul>
+<p>Geen overbodige ruis, wel een helder overzicht waarmee je weer helemaal mee bent.</p>
+<p>Veel lees- en luisterplezier!</p>
+<p>Groeten<br>De AI-nieuwsbot</p>""",
     "attachments": [
         {"filename": filename_summary, "content": pdf_data},
         {"filename": filename_podcast, "content": podcast_data},
